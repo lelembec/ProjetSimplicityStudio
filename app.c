@@ -32,10 +32,14 @@
 #include "sl_bluetooth.h"
 #include "app.h"
 #include "app_log.h"
+#include "temperature.h"
+
 
 // The advertising set handle allocated from Bluetooth stack.
 static uint8_t advertising_set_handle = 0xff;
 float temp;
+float rh;
+int16_t ble_temp;
 
 
 /**************************************************************************//**
@@ -48,6 +52,7 @@ SL_WEAK void app_init(void)
   // This is called once during start-up.                                    //
   /////////////////////////////////////////////////////////////////////////////
   app_log_info("%s\n", __FUNCTION__);
+  temperature_init();
 }
 
 
@@ -66,7 +71,8 @@ SL_WEAK void app_process_action(void)
 
  SL_WEAK void app_deinit(void)
  {
-
+   app_log_info("%s\n", __FUNCTION__);
+   temperature_deinit();
  }
 
 /**************************************************************************//**
@@ -111,6 +117,14 @@ void sl_bt_on_event(sl_bt_msg_t *evt)
     // This event indicates that a new connection was opened.
     case sl_bt_evt_connection_opened_id:
       app_log_info("%s: Connection_Opened!\n",__FUNCTION__);
+
+      if (temperature_read_ble(&ble_temp)) {
+          int16_t int_part = ble_temp / 100;
+          int16_t frac_part = (ble_temp % 100) / 10;
+
+          app_log_info("Temperature = %d.%d \xB0 C\n", int_part, frac_part);
+        }
+
       break;
 
     // -------------------------------
