@@ -33,6 +33,7 @@
 #include "app.h"
 #include "app_log.h"
 #include "temperature.h"
+#include "gatt_db.h"
 
 
 // The advertising set handle allocated from Bluetooth stack.
@@ -118,13 +119,6 @@ void sl_bt_on_event(sl_bt_msg_t *evt)
     case sl_bt_evt_connection_opened_id:
       app_log_info("%s: Connection_Opened!\n",__FUNCTION__);
 
-      if (temperature_read_ble(&ble_temp)) {
-          int16_t int_part = ble_temp / 100;
-          int16_t frac_part = (ble_temp % 100) / 10;
-
-          app_log_info("Temperature = %d.%d \xB0 C\n", int_part, frac_part);
-        }
-
       break;
 
     // -------------------------------
@@ -146,6 +140,74 @@ void sl_bt_on_event(sl_bt_msg_t *evt)
     ///////////////////////////////////////////////////////////////////////////
     // Add additional event handlers here as your application requires!      //
     ///////////////////////////////////////////////////////////////////////////
+    ///
+    /*case sl_bt_evt_gatt_server_user_read_request_id:
+    {
+      app_log_info("Demande de lecture de temperature\n");
+      if (evt->data.evt_gatt_server_user_read_request.characteristic == gattdb_temperature){
+          if (temperature_read_ble(&ble_temp)) {
+                  uint8_t connection = evt->data.evt_gatt_server_user_read_request.connection;
+                  uint16_t characteristic = evt->data.evt_gatt_server_user_read_request.characteristic;
+
+                  int16_t int_part = ble_temp / 10;
+                  int16_t frac_part = (ble_temp % 10);
+
+                  uint8_t temp_data[2];
+                  temp_data[0] = (uint8_t)(ble_temp & 0xFF);
+                  temp_data[1] = (uint8_t)((ble_temp >> 8) & 0xFF);
+
+                  app_log_info("Temperature = %d.%d \xB0 C\n", int_part, frac_part);
+
+                  sc = sl_status_t sl_bt_gatt_server_send_user_read_response(connection,characteristic,0,sizeof(temp_data),temp_data,NULL);
+
+                }
+      }
+      break;
+
+
+    }*/
+    case sl_bt_evt_gatt_server_user_read_request_id:
+    {
+      app_log_info("Demande de lecture de temperature\n");
+
+      if (evt->data.evt_gatt_server_user_read_request.characteristic == gattdb_temperature) {
+        int16_t ble_temp;
+
+        if (temperature_read_ble(&ble_temp)) {
+          uint8_t connection = evt->data.evt_gatt_server_user_read_request.connection;
+          uint16_t characteristic = evt->data.evt_gatt_server_user_read_request.characteristic;
+
+          int16_t int_part = ble_temp / 100;
+          int16_t frac_part = (ble_temp % 100);
+
+          int16_t temp_data[2]= {0};
+          memcpy(temp_data,&ble_temp,sizeof(int16_t));
+
+          app_log_info("Temperature = %d.%d\xB0""C\n", int_part,frac_part);
+
+
+          sl_status_t sc = sl_bt_gatt_server_send_user_read_response(
+            connection,
+            characteristic,
+            0,
+            sizeof(temp_data),
+            (uint8_t*)temp_data,
+            NULL
+          );
+
+          app_log_info("Temperature envoye = %d (%.2f\xB0""C), status = 0x%04X\n",
+                       ble_temp, (double)(ble_temp % 10), (unsigned int)sc);
+        } else {
+          app_log_warning("Erreur capteur : lecture température echouee\n");
+        }
+      }
+
+      break;
+    }
+
+
+
+    break;
 
     // -------------------------------
     // Default event handler.

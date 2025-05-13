@@ -27,8 +27,8 @@ bool temperature_read_ble(int16_t *ble_temperature) {
   if (status == SL_STATUS_OK) {
     // Convert from milli°C to BLE format (0.01°C)
     *ble_temperature = (int16_t)(temp_milli_celsius / 10);
-    app_log_info("Temperature : %ld (x0.001) \xB0 C => BLE : %d (x0.01) \xB0 C)\n",
-                 temp_milli_celsius, *ble_temperature);
+    app_log_info("Temperature : %ld (x0.0001) \xB0 C => BLE : %d (x0.001) \xB0 C)\n",
+                temp_milli_celsius, *ble_temperature);
     return true;
   } else {
     app_log_warning("Erreur de lecture capteur : %lu\n", status);

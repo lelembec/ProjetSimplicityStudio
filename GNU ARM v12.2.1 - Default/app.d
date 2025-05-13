@@ -88,7 +88,9 @@ app.o: ../app.c \
  c:\users\chris\simplicitystudio\sdks\gecko_sdk_2\protocol\bluetooth\inc\sl_bt_api.h \
  c:\users\chris\simplicitystudio\sdks\gecko_sdk_2\protocol\bluetooth\inc\sl_bgapi.h \
  c:\users\chris\simplicitystudio\sdks\gecko_sdk_2\protocol\bluetooth\inc\sl_bt_api_compatibility.h \
- ../app.h ../temperature.h
+ ../app.h ../temperature.h \
+ C:\Users\Chris\SimplicityStudio\v5_workspace\soc_empty_mc_cl_rm\autogen/gatt_db.h \
+ c:\users\chris\simplicitystudio\sdks\gecko_sdk_2\protocol\bluetooth\inc\sli_bt_gattdb_def.h
 c:\users\chris\simplicitystudio\sdks\gecko_sdk_2\platform\common\toolchain\inc\sl_gcc_preinclude.h:
 c:\users\chris\simplicitystudio\sdks\gecko_sdk_2\platform\emlib\inc\em_common.h:
 c:\users\chris\simplicitystudio\sdks\gecko_sdk_2\platform\device\siliconlabs\efr32mg12p\include\em_device.h:
@@ -180,3 +182,5 @@ c:\users\chris\simplicitystudio\sdks\gecko_sdk_2\protocol\bluetooth\inc\sl_bgapi
 c:\users\chris\simplicitystudio\sdks\gecko_sdk_2\protocol\bluetooth\inc\sl_bt_api_compatibility.h:
 ../app.h:
 ../temperature.h:
+C:\Users\Chris\SimplicityStudio\v5_workspace\soc_empty_mc_cl_rm\autogen/gatt_db.h:
+c:\users\chris\simplicitystudio\sdks\gecko_sdk_2\protocol\bluetooth\inc\sli_bt_gattdb_def.h:
