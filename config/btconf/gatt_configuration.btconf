@@ -75,14 +75,27 @@
     </characteristic>
   </service>
 
-  <!--Environmental Snesing-->
-  <service advertise="false" id="env_sensing" name="Environmental Snesing" requirement="mandatory" sourceId="" type="primary" uuid="181A">
+  <!--Environmental Sensing-->
+  <service advertise="false" id="env_sensing" name="Environmental Sensing" requirement="mandatory" sourceId="" type="primary" uuid="181A">
 
     <!--Temperature-->
     <characteristic const="false" id="temperature" name="Temperature" sourceId="org.bluetooth.characteristic.temperature" uuid="2A6E">
       <value length="2" type="user" variable_length="false"/>
       <properties>
         <read authenticated="false" bonded="false" encrypted="false"/>
+        <notify authenticated="false" bonded="false" encrypted="false"/>
+      </properties>
+    </characteristic>
+  </service>
+
+  <!--Automation IO-->
+  <service advertise="false" id="automation_io" name="Automation IO" requirement="mandatory" sourceId="" type="primary" uuid="1815">
+
+    <!--Digital-->
+    <characteristic const="false" id="digital" name="Digital" sourceId="" uuid="51bb7faa-b8f4-49ec-bb97-359da6b2d165">
+      <value length="0" type="user" variable_length="false">00</value>
+      <properties>
+        <write authenticated="false" bonded="false" encrypted="false"/>
       </properties>
     </characteristic>
   </service>
