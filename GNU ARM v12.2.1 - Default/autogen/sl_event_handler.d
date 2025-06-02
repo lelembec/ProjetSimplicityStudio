@@ -128,6 +128,9 @@ autogen/sl_event_handler.o: ../autogen/sl_event_handler.c \
  ../autogen/sl_iostream_init_usart_instances.h \
  c:\users\chris\simplicitystudio\sdks\gecko_sdk_2\platform\security\sl_component\sl_mbedtls_support\inc\sl_mbedtls.h \
  c:\users\chris\simplicitystudio\sdks\gecko_sdk_2\platform\service\mpu\inc\sl_mpu.h \
+ ../autogen/sl_simple_led_instances.h \
+ c:\users\chris\simplicitystudio\sdks\gecko_sdk_2\platform\driver\leddrv\inc\sl_simple_led.h \
+ c:\users\chris\simplicitystudio\sdks\gecko_sdk_2\platform\driver\leddrv\inc\sl_led.h \
  ../autogen/sl_iostream_init_instances.h \
  c:\users\chris\simplicitystudio\sdks\gecko_sdk_2\hardware\driver\configuration_over_swo\inc\sl_cos.h
 c:\users\chris\simplicitystudio\sdks\gecko_sdk_2\platform\common\toolchain\inc\sl_gcc_preinclude.h:
@@ -259,5 +262,8 @@ c:\users\chris\simplicitystudio\sdks\gecko_sdk_2\platform\service\iostream\inc\s
 ../autogen/sl_iostream_init_usart_instances.h:
 c:\users\chris\simplicitystudio\sdks\gecko_sdk_2\platform\security\sl_component\sl_mbedtls_support\inc\sl_mbedtls.h:
 c:\users\chris\simplicitystudio\sdks\gecko_sdk_2\platform\service\mpu\inc\sl_mpu.h:
+../autogen/sl_simple_led_instances.h:
+c:\users\chris\simplicitystudio\sdks\gecko_sdk_2\platform\driver\leddrv\inc\sl_simple_led.h:
+c:\users\chris\simplicitystudio\sdks\gecko_sdk_2\platform\driver\leddrv\inc\sl_led.h:
 ../autogen/sl_iostream_init_instances.h:
 c:\users\chris\simplicitystudio\sdks\gecko_sdk_2\hardware\driver\configuration_over_swo\inc\sl_cos.h:

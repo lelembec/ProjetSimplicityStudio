@@ -37,6 +37,12 @@
 #include "sl_bt_api.h"
 #include "sl_sleeptimer.h"
 
+#include "sl_simple_led_instances.h"
+#include "sl_simple_led.h"
+extern const sl_led_t sl_led_led0;
+
+
+
 // The advertising set handle allocated from Bluetooth stack.
 static uint8_t advertising_set_handle = 0xff;
 float temp;
@@ -63,6 +69,7 @@ SL_WEAK void app_init(void)
   /////////////////////////////////////////////////////////////////////////////
   app_log_info("%s\n", __FUNCTION__);
   temperature_init();
+  sl_simple_led_init_instances();
 }
 
 
@@ -93,6 +100,7 @@ SL_WEAK void app_process_action(void)
    sl_bt_external_signal(TEMPERATURE_TIMER_SIGNAL);
 
  }
+
 
 /**************************************************************************//**
  * Bluetooth stack event handler.
@@ -224,8 +232,8 @@ void sl_bt_on_event(sl_bt_msg_t *evt)
 
           app_log_info("Temperature envoye = %d (%.2f\xB0""C), status = 0x%04X\n",
                        ble_temp, (double)(ble_temp % 10), (unsigned int)sc);
-        } else {
-          app_log_warning("Erreur capteur : lecture température echouee\n");
+        }else {
+          app_log_warning("Erreur capteur : lecture  echouee\n");
         }
       }
 
@@ -307,13 +315,48 @@ void sl_bt_on_event(sl_bt_msg_t *evt)
 
           }
         } else {
-          app_log_warning("Lecture température échouée\n");
+          app_log_info("Lecture température échouée\n");
           notify_connection = 0xFF;
         }
       }
 
       break;
     }
+    case sl_bt_evt_gatt_server_user_write_request_id:
+      {
+        uint16_t attr = evt->data.evt_gatt_server_user_write_request.characteristic;
+        uint8_t opcode = evt->data.evt_gatt_server_user_write_request.att_opcode;
+        app_log_info("att_opcode = 0x%02X\n", opcode);
+
+          if (attr == gattdb_digital_0) {
+            // Récupération des données écrites
+            uint8_t *data = evt->data.evt_gatt_server_user_write_request.value.data;
+            uint8_t len   = evt->data.evt_gatt_server_user_write_request.value.len;
+            if (len > 0) {
+                if (data[0] == 1) {
+                    sl_led_turn_on(&sl_led_led0);
+                    app_log_info("Commande 'Active' : LED allumee\n");
+                } else if (data[0] == 0) {
+                    sl_led_turn_off(&sl_led_led0);
+                    app_log_info("Commande 'Inactive' : LED eteinte\n");
+                } else {
+
+                  }
+                }
+            }
+          if (opcode == 0x12) { // Réponse demandée
+            sl_bt_gatt_server_send_user_write_response(
+              evt->data.evt_gatt_server_user_write_request.connection,
+              evt->data.evt_gatt_server_user_write_request.characteristic,
+              0 // OK
+            );
+            app_log_info("Write Request, reponse demande\n");
+          } else if (opcode == 0x52) {//Reponse non demandée
+            app_log_info("Write sans reponse\n");
+          }
+          break;
+      }
+
 
 
     // -------------------------------
